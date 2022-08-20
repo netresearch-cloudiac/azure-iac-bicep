@@ -15,3 +15,10 @@ az deployment group create -g RG-Demo -f .\firstbicep.bicep
     - 'toylaunch${resourceGroup().id}'
 
 - parameter decorators
+- output
+- modules - resualbe code 
+    - Have a clear purpose for each module
+    - be self-contained as possible
+    - should not output secrets
+
+    
