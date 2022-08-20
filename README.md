@@ -6,3 +6,12 @@ Bicep samples and test of IaC
 az group create -g RG-Demo -l eastus
 az deployment group create -g RG-Demo -f .\firstbicep.bicep
 ```
+
+- Parameters
+- Variables
+- Expressions
+    - uniqueString() -- takes a seed value gives a uniqe name, same seed value gives same name
+- string interpolation
+    - 'toylaunch${resourceGroup().id}'
+
+- parameter decorators
