@@ -1,3 +1,17 @@
+targetScope = 'subscription'
+
+@description('Region Location name')
+param locationname string = 'eastus' 
+
+@description('Resrouce group name')
+param rgname string
+
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: rgname
+  location: locationname
+}
+
+
 @description('The name of you Virtual Machine.')
 param vmName string = 'simpleLinuxVM'
 
@@ -31,7 +45,8 @@ param ubuntuOSVersion string = '18.04-LTS'
 
 
 @description('Location for all resources.')
-param location string = resourceGroup().location
+// param location string = resourceGroup().location
+param location string = locationname
 
 @description('The size of the VM')
 param vmSize string = 'Standard_B2s'
@@ -61,6 +76,19 @@ var linuxConfiguration = {
     ]
   }
 }
+
+// resource symbolicname 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+//   name: 'string'
+//   location: 'string'
+//   tags: {
+//     tagName1: 'tagValue1'
+//     tagName2: 'tagValue2'
+//   }
+//   managedBy: 'string'
+//   properties: {}
+// }
+
+
 
 resource nic 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: networkInterfaceName
@@ -130,28 +158,18 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         addressPrefix
       ]
     }
-    subnets:[
-      {
-        name: subnetName
-          properties: {
-            addressPrefix: subnetAddressPrefix
-            privateEndpointNetworkPolicies: 'Enabled'
-            privateLinkServiceNetworkPolicies: 'Enabled'
-          }
-        }
-    ]
   }
 }
 
-// resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
-//   parent: vnet
-//   name: subnetName
-//   properties: {
-//     addressPrefix: subnetAddressPrefix
-//     privateEndpointNetworkPolicies: 'Enabled'
-//     privateLinkServiceNetworkPolicies: 'Enabled'
-//   }
-// }
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
+  parent: vnet
+  name: subnetName
+  properties: {
+    addressPrefix: subnetAddressPrefix
+    privateEndpointNetworkPolicies: 'Enabled'
+    privateLinkServiceNetworkPolicies: 'Enabled'
+  }
+}
 
 resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: publicIPAddressName
